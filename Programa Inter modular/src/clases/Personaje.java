@@ -1,6 +1,6 @@
 package clases;
 
-public class Personaje {
+public abstract class Personaje {
 	private int vida;
 	private int vidaInicial;
 	private int ataque;
@@ -29,9 +29,6 @@ public class Personaje {
 		if (otro.vida < 0) {
 			otro.vida = 0; // asegurar que no sea negativo
 		}
-	}
-
-	public void curar() {
 	}
 
 	public void resetear() {
