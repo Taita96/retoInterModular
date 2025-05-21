@@ -56,7 +56,11 @@ public class Metodos {
 			jugador.atacar(enemigo);
 		} else if (eleccionJugador == 2) {
 			System.out.printf("%s se cura%n", jugador.getNombre());
-			jugador.curar();
+			if(jugador instanceof Guerrero){
+				((Guerrero)jugador).curar();
+			} else if(jugador instanceof Mago){
+				((Mago)jugador).curar();
+			}	
 		} else {
 			System.err.println("ERROR: Respuesta incorrecta, vuelve a intentarlo");
 			System.out.println("================================================");
