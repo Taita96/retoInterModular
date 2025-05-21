@@ -1,5 +1,6 @@
 package programa;
 
+import java.io.File;
 import java.util.Scanner;
 
 import clases.Enemigo;
@@ -12,11 +13,14 @@ public class Programa {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		boolean jugarDeNuevo;
-
+		File archivo = null;
 		do {
 			Juego juego = new Juego();
 
 			System.out.println("BIENVENID@ AL JUEGO:");
+			
+			Metodos.mostrarAnteriorRecor(archivo);
+			
 			System.out.print("¿Cuántas rondas quieres jugar? ");
 			int rondasJugador = scanner.nextInt();
 
@@ -26,13 +30,15 @@ public class Programa {
 
 			System.out.print("Introduce tu nombre: ");
 			String nombreJugador = scanner.nextLine();
+			
+			int record = Metodos.obtenerRecord(archivo);
 
 			Metodos.elegirPersonaje(scanner, juego, nombreJugador);
 
 			juego.iniciarJuego();
 
 			boolean jugadorDerrotado = false;
-
+			
 			do {
 				Personaje jugador = juego.getJugador();
 				Enemigo enemigo = juego.getSiguiente();
@@ -66,7 +72,11 @@ public class Programa {
 			if (!jugadorDerrotado) {
 				System.out.printf("¡FELICIDADES %s! HAS GANADO EL JUEGO.%n", nombreJugador.toUpperCase());
 				System.out.println("================================================");
+				Metodos.escribirRecord(archivo, juego, record, nombreJugador);
 			}
+		
+			
+			
 			
 			System.out.print("¿Quieres volver a jugar? (si/no): "); 
 			String respuesta = scanner.nextLine().toLowerCase();
