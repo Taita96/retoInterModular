@@ -2,6 +2,7 @@ package clases;
 
 public class Guerrero extends Personaje implements Jugable {
 
+	private static final long serialVersionUID = 5413067506999514857L;
 	static final int FUERZA = 15; 
 	static final int DEFENSA = 10; 
 	static final int POCIONES = 2; 
