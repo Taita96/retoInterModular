@@ -2,6 +2,11 @@ package clases;
 
 public class Enemigo extends Personaje {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7327014330817988549L;
+
 	public Enemigo() {}
 	
 	public void iniciarEnemigo(String nombre) {

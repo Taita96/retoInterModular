@@ -1,7 +1,8 @@
 package clases;
 
 public class Mago extends Personaje implements Jugable {
-	
+
+	private static final long serialVersionUID = 5632893257722428908L;
 	static final int FUERZA_MAGIA = 20; 
 	static final int FUERZA_SIN_MAGIA = 5; 
 	static final int DEFENSA = 5; 

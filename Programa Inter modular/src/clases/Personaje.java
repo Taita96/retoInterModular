@@ -1,6 +1,10 @@
 package clases;
 
-public abstract class Personaje {
+import java.io.Serializable;
+
+public abstract class Personaje implements Serializable {
+
+	private static final long serialVersionUID = 1571423440978840022L;
 	private int vida;
 	private int vidaInicial;
 	private int ataque;

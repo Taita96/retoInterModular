@@ -2,7 +2,9 @@ package clases;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -16,14 +18,17 @@ public class Metodos {
 		Scanner input = null;
 		int record = 0;
 
+		if (!archivo.exists()) {
+			return 0;
+		}
+
 		try {
-			archivo = new File("mejorPuntuacion.txt");
 			input = new Scanner(archivo);
 			while (input.hasNextInt()) {
 				record = input.nextInt();
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("EL archivo no existe");
+			System.err.println("El archivo no existe");
 		} finally {
 			if (input != null) {
 				input.close();
@@ -34,38 +39,40 @@ public class Metodos {
 
 	public static void escribirRecord(File archivo, Juego juego, int record, String nombre) {
 		if (juego.getnRondas() > record) {
+			System.out.println("¡ES INCREIBLE " + nombre.toUpperCase() + "! HAS SUPERADO EL RECORD DE RONDAS.");
+			System.out.println("================================================");
 			try {
-				archivo = new File("mejorPuntuacion.txt");
 				PrintWriter pw = new PrintWriter(archivo);
 				pw.println(juego.getRonda());
 				pw.println(nombre);
 				pw.close();
 			} catch (IOException e) {
-				System.out.println("Ruta no existe");
+				System.err.println("Ruta no existe");
 			}
 		}
 	}
-	
-	public static void mostrarAnteriorRecor(File archivo){
+
+	public static void mostrarAnteriorRecor(File archivo) {
 		Scanner input = null;
 		int record = obtenerRecord(archivo);
 		String nombre = "";
 		try {
-			archivo = new File("mejorPuntuacion.txt");
 			input = new Scanner(archivo);
 			while (input.hasNext()) {
 				nombre = input.next();
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("EL archivo no existe");
+			System.err.println("El archivo no existe");
 		} finally {
 			if (input != null) {
 				input.close();
 			}
 		}
-		
-		System.out.println("\nEl jugador(a) " + nombre);
-		System.out.println("Tiene un record Máximo de: " + record+"\n");
+
+		System.out.println("================================================");
+		System.out.println("En el último juego: " + nombre);
+		System.out.println("Tiene un record máximo de: " + record + " RONDAS");
+		System.out.println("================================================");
 	}
 
 	public static void elegirPersonaje(Scanner scanner, Juego juego, String nombre) {
@@ -102,35 +109,77 @@ public class Metodos {
 		System.out.printf("Eres: %s %n", jugador, jugador.getVida(), jugador.getVidaInicial());
 	}
 
-	public static void elegirAccion(Scanner scanner, Juego juego, Personaje jugador, Enemigo enemigo) {
+	public static boolean elegirAccion(Scanner scanner, Juego juego, Personaje jugador, Enemigo enemigo) {
 		System.out.println("Acciones:");
 		System.out.println("1. Atacar");
 		System.out.println("2. Curar");
-		System.out.print("Elige (1, 2): ");
+		System.out.println("3. Guardar");
+		System.out.print("Elige (1, 2, 3): ");
 		int eleccionJugador = scanner.nextInt();
 
 		scanner.nextLine();
 
-		if (eleccionJugador == 1) {
+		boolean dev = false;
+
+		switch (eleccionJugador) {
+		case 1:
 			System.out.printf("%s ataca a %s%n", jugador.getNombre(), enemigo.getNombre());
 			jugador.atacar(enemigo);
-		} else if (eleccionJugador == 2) {
+			ataqueEnemigo(jugador, enemigo);
+			break;
+		case 2:
 			System.out.printf("%s se cura%n", jugador.getNombre());
 			if (jugador instanceof Guerrero) {
 				((Guerrero) jugador).curar();
 			} else if (jugador instanceof Mago) {
 				((Mago) jugador).curar();
 			}
-		} else {
+			ataqueEnemigo(jugador, enemigo);
+			break;
+		case 3:
+			FileOutputStream fw = null;
+			ObjectOutputStream salidaDatos = null;
+			try {
+				File guardarJuego = new File("datosAntJuego.dat");
+				fw = new FileOutputStream(guardarJuego);
+				salidaDatos = new ObjectOutputStream(fw);
+				salidaDatos.writeObject(juego);
+				dev = true;
+				System.out.println("Partida guardada con ÉXITO");
+			} catch (FileNotFoundException e) {
+				System.out.println("Archivo no existe");
+			} catch (IOException e) {
+				System.out.println("El Documento no se pudo escribir correctamente");
+			} finally {
+				try {
+					fw.close();
+					salidaDatos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				juego.eliminarEnemigos();
+			}
+			break;
+		default:
 			System.err.println("ERROR: Respuesta incorrecta, vuelve a intentarlo");
 			System.out.println("================================================");
 			elegirAccion(scanner, juego, jugador, enemigo);
+
 		}
+		return dev;
+
 	}
 
 	public static void ataqueEnemigo(Personaje jugador, Enemigo enemigo) {
 		System.out.printf("%s ataca a %s%n", enemigo.getNombre(), jugador.getNombre());
 		enemigo.atacar(jugador);
+	}
+
+	public static int elegirOpc(Scanner scanner) {
+		System.out.println("1. Nuevo Juego");
+		System.out.println("2. Cargar partida anterior");
+		System.out.print("Elige (1, 2): ");
+		return scanner.nextInt();
 	}
 
 }

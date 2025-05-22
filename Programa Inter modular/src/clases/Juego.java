@@ -1,8 +1,11 @@
 package clases;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Juego {
+public class Juego implements Serializable{
+
+	private static final long serialVersionUID = 627450528453243275L;
 	private static String[] nombresEnemigos = { "Señor Mordisquitos", "El Gato con Navajas", "Carla la Celosa",
 			"Conde Linux el Destructor", "El Espíritu del Wi-Fi Caído", "Reverendo Chicharrón",
 			"La Excepción No Capturada", "Debugger el Oscuro", "Diego el Quita Puntos"};
@@ -59,6 +62,10 @@ public class Juego {
     public boolean finalJuego() {
         return enemigos.isEmpty();
     }
+    
+    public void eliminarEnemigos() {
+    	enemigos.clear();
+    }
 
 	public Personaje getJugador() {
 		return jugador;
@@ -84,4 +91,15 @@ public class Juego {
 		this.ronda = ronda;
 	}
 
+	@Override
+	public String toString() {
+		Enemigo enemigoActual = enemigos.isEmpty() ? null : enemigos.get(0);
+		return String.format("Juego [enemigo actual:%s (vida:%s), jugador:%s, nRondas:%s, ronda:%s]", 
+			enemigoActual != null ? enemigoActual.getNombre() : "Ninguno",
+			enemigoActual != null ? enemigoActual.getVida() : "N/A",
+			jugador, nRondas, ronda);
+	}
+	
+	
+	
 }
