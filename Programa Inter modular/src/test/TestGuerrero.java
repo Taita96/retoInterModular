@@ -58,6 +58,16 @@ public class TestGuerrero {
 	}
 	
 	@Test
+	public void testCurarSinPociones() {
+		guerrero.setVida(CONFIGURAR_VIDA);
+		guerrero.curar();
+		guerrero.curar(); // segunda cura
+		guerrero.curar(); // sin pociones
+		assertEquals(VIDA_INICIAL_GUERRERO, guerrero.getVida());
+		assertEquals(0, guerrero.getPociones()); // No debe haber curado esta vez
+	}
+	
+	@Test
 	public void testCurarRestauraVida() {
 	    guerrero.setVida(CONFIGURAR_VIDA); 
 	    guerrero.curar(); // llama internamente a super.resetear()
