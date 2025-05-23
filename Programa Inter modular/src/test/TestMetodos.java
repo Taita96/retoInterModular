@@ -167,7 +167,7 @@ class TestMetodos {
 	}
 	
 	@Test
-	void testElegirOpc() {
+	void testElegirOpc_guardar() {
 		Scanner scanner = new Scanner(SCANNER_USUARIO_GUARDAR);
 		int opcion = Metodos.elegirOpc(scanner);
 		assertEquals(OPC_GUARDAR, opcion);
