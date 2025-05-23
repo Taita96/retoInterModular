@@ -38,6 +38,27 @@ public class Mago extends Personaje implements Jugable {
 		magia = MAGIA;
 	}
 	
+
+	public void setMagia(int magia) {
+		this.magia = magia;
+	}
+
+	public static int getFuerzaMagia() {
+		return FUERZA_MAGIA;
+	}
+
+	public static int getFuerzaSinMagia() {
+		return FUERZA_SIN_MAGIA;
+	}
+
+	public int getDefensa() {
+		return DEFENSA;
+	}
+
+	public int getMagia() {
+		return magia;
+	}
+
 	public String toString() {
 		return super.toString() + "; Magia: " + magia;
 	}
